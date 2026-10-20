@@ -1,19 +1,14 @@
 import streamlit as st
 import joblib
 import pandas as pd
+from pathlib import Path
 
 # Load model
-from pathlib import Path
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-MODELS_DIR = BASE_DIR / "models"
-
-from pathlib import Path
-
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent
 MODELS_DIR = BASE_DIR / "models"
 
 pipeline = joblib.load(MODELS_DIR / "loan_default_pipeline.pkl")
+
 st.set_page_config(
     page_title="Loan Default Risk Prediction",
     page_icon="🏦",
@@ -32,11 +27,12 @@ if uploaded_file is not None:
     st.subheader("Uploaded Data")
     st.dataframe(data.head())
 
-   # Predict
+    # Predict
     prediction = pipeline.predict(data)
 
     result = data.copy()
     result["Prediction"] = prediction
+
     st.success(f"✅ Prediction completed successfully for {len(result)} records.")
 
     st.subheader("Prediction Results")
